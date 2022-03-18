@@ -9,19 +9,6 @@
   text-align: center;
   width: 500px;
 }
-
-.header {
-  padding: 10px;
-  background-color: makerGreen;
-  font-weight: 1000;
-  font-size: 2rem;
-}
-.header > img {
-  margin: auto;
-  display: block;
-  width: 50px;
-}
-
 .login {
   display: flex;
   flex-direction: column;
@@ -48,9 +35,4 @@
 
 .login > button:hover {
   background-color: makerLightPink;
-}
-
-.footer {
-  background-color: makerGreen;
-  padding: 15px;
 }

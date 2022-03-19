@@ -1,31 +1,22 @@
-@value makerGreen from "../../common/colors.css";
-@value makerWhite from "../../common/colors.css";
-@value makerLightPink from "../../common/colors.css";
+@value makerBlack, makerGreen, makerWhite, makerLightPink from "../../common/colors.css";
 
-.section {
-  margin: auto;
-  margin-top: 200px;
-  color: aliceblue;
+.login {
+  color: makerBlack;
   text-align: center;
   width: 500px;
-}
-.login {
-  display: flex;
-  flex-direction: column;
-  padding: 20px 10px;
   background-color: makerWhite;
-  color: black;
+}
+
+.list {
+  padding: 0px 10px;
+  list-style: none;
+  background-color: makerWhite;
   font-weight: 1000;
   font-size: 2rem;
 }
-
-.login > span {
-  margin-bottom: 20px;
-}
-
-.login > button {
+.button {
+  width: 100%;
   font-size: 1rem;
-  margin: 5px;
   padding: 10px;
   background-color: makerWhite;
   border: 3px solid makerGreen;
@@ -33,6 +24,6 @@
   cursor: pointer;
 }
 
-.login > button:hover {
+.button:hover {
   background-color: makerLightPink;
 }

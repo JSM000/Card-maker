@@ -3,4 +3,10 @@
 .footer {
   background-color: makerGreen;
   padding: 15px;
+  text-align: center;
+}
+
+.title {
+  color: white;
+  margin: 0;
 }

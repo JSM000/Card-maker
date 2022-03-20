@@ -22,11 +22,16 @@ const Maker = memo(({ authService }) => {
     setCards(udated);
   };
 
+  const deletCard = (id) => {
+    const udated = cards.filter((card) => card.id !== id);
+    setCards(udated);
+  };
+
   return (
     <section className={styles.maker}>
       <Header onLogout={onLogout}></Header>
       <main className={styles.main}>
-        <Editor cards={cards} addCard={addCard} />
+        <Editor cards={cards} addCard={addCard} deletCard={deletCard} />
         <Preview cards={cards} />
       </main>
       <Footer></Footer>

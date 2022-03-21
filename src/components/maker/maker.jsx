@@ -7,7 +7,7 @@ import Preview from "../preview/preview";
 import { useNavigate } from "react-router-dom";
 
 const Maker = memo(({ authService }) => {
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState({});
 
   const navigate = useNavigate();
   const onLogout = () => {
@@ -17,21 +17,32 @@ const Maker = memo(({ authService }) => {
     authService.onAuthChanged((user) => !user && navigate("/"));
   });
 
-  const addCard = (card) => {
-    const udated = [...cards, card];
-    setCards(udated);
+  const addOrAmendCard = (card) => {
+    setCards((cards) => {
+      const udated = { ...cards };
+      udated[card.id] = card;
+      return udated;
+    });
   };
 
   const deletCard = (id) => {
-    const udated = cards.filter((card) => card.id !== id);
-    setCards(udated);
+    setCards((cards) => {
+      const udated = { ...cards };
+      delete udated[id];
+      return udated;
+    });
   };
 
   return (
     <section className={styles.maker}>
       <Header onLogout={onLogout}></Header>
       <main className={styles.main}>
-        <Editor cards={cards} addCard={addCard} deletCard={deletCard} />
+        <Editor
+          cards={cards}
+          addCard={addOrAmendCard}
+          deletCard={deletCard}
+          amendCard={addOrAmendCard}
+        />
         <Preview cards={cards} />
       </main>
       <Footer></Footer>

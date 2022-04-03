@@ -3,13 +3,18 @@ import styles from "./app.module.css";
 import Login from "./components/login/login.jsx";
 import Maker from "./components/maker/maker";
 
-const App = ({ authService }) => {
+const App = ({ authService, imageService }) => {
   return (
     <div className={styles.app}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Login authService={authService} />} />
-          <Route path="/maker" element={<Maker authService={authService} />} />
+          <Route
+            path="/maker"
+            element={
+              <Maker authService={authService} imageService={imageService} />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

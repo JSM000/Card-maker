@@ -6,8 +6,9 @@ import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 import { useNavigate } from "react-router-dom";
 
-const Maker = memo(({ authService }) => {
+const Maker = memo(({ authService, imageService }) => {
   const [cards, setCards] = useState({});
+  const [image, setImage] = useState({});
 
   const navigate = useNavigate();
   const onLogout = () => {
@@ -19,19 +20,40 @@ const Maker = memo(({ authService }) => {
 
   const addOrAmendCard = (card) => {
     setCards((cards) => {
-      const udated = { ...cards };
-      udated[card.id] = card;
-      return udated;
+      const updated = { ...cards };
+      updated[card.id] = card;
+      return updated;
     });
   };
 
   const deletCard = (id) => {
     setCards((cards) => {
-      const udated = { ...cards };
-      delete udated[id];
-      return udated;
+      const updated = { ...cards };
+      delete updated[id];
+      return updated;
     });
   };
+
+  const setImg = (file, id) => {
+    imageService
+      .upload(file)
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(id);
+        if (id) {
+          const updated = { ...cards };
+          updated[id]["fileURL"] = data.url;
+          return updated;
+        } else {
+          const updated = { imgName: file.name, imgURL: data.url };
+          setImage(updated);
+        }
+      });
+  };
+
+  const changeImg = () => {};
 
   return (
     <section className={styles.maker}>
@@ -40,8 +62,10 @@ const Maker = memo(({ authService }) => {
         <Editor
           cards={cards}
           addCard={addOrAmendCard}
-          deletCard={deletCard}
           amendCard={addOrAmendCard}
+          deletCard={deletCard}
+          setImg={setImg}
+          image={image}
         />
         <Preview cards={cards} />
       </main>

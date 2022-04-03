@@ -3,7 +3,7 @@ import styles from "./card_edit_form.module.css";
 import Button from "../button/button";
 import ImageFileInput from "../image_file_input/image_file_input";
 
-const CardEditForm = memo(({ id, card, deletCard, amendCard }) => {
+const CardEditForm = memo(({ card, deletCard, amendCard, setImg }) => {
   const { name, company, theme, title, email, message, fileName, fileURL } =
     card;
   // const nameRef = useRef();
@@ -12,7 +12,6 @@ const CardEditForm = memo(({ id, card, deletCard, amendCard }) => {
   // const titleRef = useRef();
   // const emailRef = useRef();
   // const messageRef = useRef();
-
   const onSumit = (e) => {
     e.preventDefault();
     deletCard(card.id);
@@ -73,7 +72,7 @@ const CardEditForm = memo(({ id, card, deletCard, amendCard }) => {
         onChange={onChange}
       ></textarea>
       <div className={styles.fileInput}>
-        <ImageFileInput />
+        <ImageFileInput fileName={fileName} id={card.id} setImg={setImg} />
       </div>
       <Button name={"Delete"} onClick={onSumit} />
     </form>

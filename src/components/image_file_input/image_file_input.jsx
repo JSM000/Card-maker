@@ -20,19 +20,21 @@ const ImageFileInput = ({ id, cardLoading, loading, setImg, fileName }) => {
         accept="image/*"
         onChange={onImgChange}
       />
-      <button className={`${styles.imageBtn} ${getStyles(fileName)}`} onClick={onClick}>
-        {cardLoading || loading ? <Spinner/> : fileName ? fileName : "No file"}
+      <button
+        className={`${styles.imageBtn} ${getStyles(fileName)}`}
+        onClick={onClick}
+      >
+        {cardLoading || loading ? <Spinner /> : fileName ? fileName : "No file"}
       </button>
-      ;
     </>
   );
 };
 
 function getStyles(fileName) {
-  if(fileName) {
-    return styles.pink
-  } else{
-    return
+  if (fileName) {
+    return styles.pink;
+  } else {
+    return;
   }
 }
 

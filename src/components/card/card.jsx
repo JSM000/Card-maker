@@ -5,7 +5,7 @@ const Card = memo(({ card }) => {
   const DEFAULT_IMAGE = "images/default_logo.png";
   const { name, company, theme, title, email, message, fileURL } = card;
   const url = fileURL || DEFAULT_IMAGE;
-  console.log(fileURL);
+  console.log("rendered card")
   return (
     <li className={`${styles.card} ${getStyles(theme)}`}>
       <img className={styles.avatar} src={url} alt="profile photo" />

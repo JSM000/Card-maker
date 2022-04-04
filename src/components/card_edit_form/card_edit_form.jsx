@@ -19,6 +19,7 @@ const CardEditForm = memo(({ card, deletCard, amendCard, setImg }) => {
   const onChange = (e) => {
     amendCard({ ...card, [e.currentTarget.name]: e.currentTarget.value });
   };
+  console.log("cardEditForm", card.id);
   return (
     <form className={styles.form} action="">
       <input
@@ -72,7 +73,12 @@ const CardEditForm = memo(({ card, deletCard, amendCard, setImg }) => {
         onChange={onChange}
       ></textarea>
       <div className={styles.fileInput}>
-        <ImageFileInput fileName={fileName} id={card.id} setImg={setImg} />
+        <ImageFileInput
+          id={card.id}
+          cardLoading={card.loading}
+          fileName={fileName}
+          setImg={setImg}
+        />
       </div>
       <Button name={"Delete"} onClick={onSumit} />
     </form>

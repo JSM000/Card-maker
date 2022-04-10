@@ -6,26 +6,26 @@ import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 import { useNavigate } from "react-router-dom";
 
-const Maker = memo(({ authService, FileInput }) => {
+const Maker = memo(({ databaseService, authService, FileInput }) => {
   const [cards, setCards] = useState({});
   const [image, setImage] = useState({});
+  const [userId, setUserId] = useState()
 
   const navigate = useNavigate();
   const onLogout = () => {
     authService.logout();
   };
   useEffect(() => {
-    authService.onAuthChanged((user) => !user && navigate("/"));
+    authService.onAuthChanged((user) => {
+      user ? setUserId(user.uid) : navigate("/")});
   });
 
   const addOrAmendCard = (card, add) => {
-    console.log(card);
     add && setImage({});
-    setCards((cards) => {
-      const updated = { ...cards };
-      updated[card.id] = card;
-      return updated;
-    });
+    const updated = { ...cards };
+    updated[card.id] = card;
+    setCards(updated);
+    databaseService.storeCards(`cards/${userId}`, updated)
   };
 
   const deletCard = (id) => {

@@ -1,5 +1,5 @@
+import {firebaseApp} from "./firebase";
 import firebase from "firebase";
-import firebaseApp from "./firebase";
 
 class AuthService {
   login(providerName) {
@@ -15,6 +15,10 @@ class AuthService {
     firebase.auth().onAuthStateChanged((user) => {
       onUserChanged(user);
     });
+  }
+
+  write(data) {
+    const database = new firebase.database();
   }
 }
 

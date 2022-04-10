@@ -3,7 +3,7 @@ import styles from "./app.module.css";
 import Login from "./components/login/login.jsx";
 import Maker from "./components/maker/maker";
 
-const App = ({ authService, imageService }) => {
+const App = ({ authService, imageService, FileInput }) => {
   return (
     <div className={styles.app}>
       <BrowserRouter>
@@ -12,7 +12,11 @@ const App = ({ authService, imageService }) => {
           <Route
             path="/maker"
             element={
-              <Maker authService={authService} imageService={imageService} />
+              <Maker
+                authService={authService}
+                FileInput={FileInput}
+                imageService={imageService}
+              />
             }
           />
         </Routes>

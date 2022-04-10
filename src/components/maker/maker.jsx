@@ -6,10 +6,9 @@ import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 import { useNavigate } from "react-router-dom";
 
-const Maker = memo(({ authService, imageService }) => {
+const Maker = memo(({ authService, FileInput }) => {
   const [cards, setCards] = useState({});
   const [image, setImage] = useState({});
-  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const onLogout = () => {
@@ -20,7 +19,8 @@ const Maker = memo(({ authService, imageService }) => {
   });
 
   const addOrAmendCard = (card, add) => {
-    add && setImage({})
+    console.log(card);
+    add && setImage({});
     setCards((cards) => {
       const updated = { ...cards };
       updated[card.id] = card;
@@ -36,60 +36,30 @@ const Maker = memo(({ authService, imageService }) => {
     });
   };
 
-  const setImg = async (file, id) => {
+  const setImg = (id, fileName, url) => {
+    console.log(url);
     id
       ? setCards((cards) => {
           const updated = { ...cards };
-          const card = updated[id];
-          card["loading"] = true;
+          const card = { ...updated[id] };
+          card["fileName"] = fileName;
+          card["fileURL"] = url;
           updated[id] = card;
           return updated;
         })
-      : setLoading(true);
-    await imageService
-      .upload(file)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (id) {
-          setCards((cards) => {
-            const updated = { ...cards };
-            const card = { ...updated[id] };
-            card["fileURL"] = data.url;
-            card["fileName"] = file.name;
-            updated[id] = card;
-            return updated;
-          });
-        } else {
-          const updated = { imgName: file.name, imgURL: data.url };
-          setImage(updated);
-        }
-      });
-    id
-      ? setCards((cards) => {
-          const updated = { ...cards };
-          const card = updated[id];
-          card["loading"] = false;
-          updated[id] = card;
-          return updated;
-        })
-      : setLoading(false);
+      : setImage({ fileName: fileName, url: url });
   };
-
-  const changeImg = () => {};
 
   return (
     <section className={styles.maker}>
       <Header onLogout={onLogout}></Header>
       <main className={styles.main}>
         <Editor
-          loading={loading}
           cards={cards}
-          addCard={addOrAmendCard}
-          amendCard={addOrAmendCard}
+          addOrAmendCard={addOrAmendCard}
           deletCard={deletCard}
           setImg={setImg}
+          FileInput={FileInput}
           image={image}
         />
         <Preview cards={cards} />

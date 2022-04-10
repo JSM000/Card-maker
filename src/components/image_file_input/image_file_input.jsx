@@ -1,16 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Spinner from "../spinner/spinner";
 import styles from "./image_file_input.module.css";
 
-const ImageFileInput = ({ id, cardLoading, loading, setImg, fileName }) => {
+const ImageFileInput = ({ id, fileName, setImg, imageService }) => {
+  const [loading, setLoading] = useState();
   const inputRef = useRef();
+
   const onClick = (e) => {
     e.preventDefault();
     inputRef.current.click();
   };
+
   const onImgChange = (e) => {
-    setImg(e.target.files[0], id);
+    setLoading(true);
+    const file = e.target.files[0];
+    imageService.upload(file).then((url) => {
+      const regax = /(.+)\../;
+      const fileNameRegax = file.name.match(regax)[1];
+      setImg(id, fileNameRegax, url);
+      setLoading(false);
+    });
   };
+
   return (
     <>
       <input
@@ -24,7 +35,7 @@ const ImageFileInput = ({ id, cardLoading, loading, setImg, fileName }) => {
         className={`${styles.imageBtn} ${getStyles(fileName)}`}
         onClick={onClick}
       >
-        {cardLoading || loading ? <Spinner /> : fileName ? fileName : "No file"}
+        {loading ? <Spinner /> : fileName || "No file"}
       </button>
     </>
   );

@@ -20,12 +20,16 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
       user ? setUserId(user.uid) : navigate("/")});
   });
 
+  useEffect(() => {
+    databaseService.storeCards(`${userId}`, cards)
+  }, [cards]);
+
   const addOrAmendCard = (card, add) => {
     add && setImage({});
-    const updated = { ...cards };
-    updated[card.id] = card;
-    setCards(updated);
-    databaseService.storeCards(`cards/${userId}`, updated)
+    setCards((cards) => {
+      const updated = { ...cards };
+      updated[card.id] = card;
+      return updated});
   };
 
   const deletCard = (id) => {

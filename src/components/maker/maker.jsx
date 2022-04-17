@@ -4,16 +4,20 @@ import Header from "../header/header";
 import Footer from "../footer/footer";
 import Editor from "../editor/editor";
 import Preview from "../preview/preview";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Maker = memo(({ databaseService, authService, FileInput }) => {
-  const [cards, setCards] = useState({});
-  const [userId, setUserId] = useState();
-
   const navigate = useNavigate();
+  const location = useLocation();
+  const locationState = location?.state;
+
+  const [cards, setCards] = useState({});
+  const [userId, setUserId] = useState(locationState && locationState.id);
+
   const onLogout = () => {
     authService.logout();
   };
+
   useEffect(() => {
     authService.onAuthChanged((user) => {
       user ? setUserId(user.uid) : navigate("/");
@@ -21,18 +25,14 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
   });
 
   useEffect(() => {
-    databaseService.storeCards(`${userId}`, cards);
-  }, [cards]);
-
-  useEffect(() => {
     if (!userId) {
       return;
     }
-    const stopRead = databaseService.readCards(userId, (value) => {
-      setCards(value);
+    const stopSync = databaseService.syncCards(userId, (cards) => {
+      setCards(cards);
     });
-    return stopRead;
-  }, [userId, databaseService]);
+    return () => stopSync();
+  }, [userId]);
 
   const addOrAmendCard = (card) => {
     setCards((cards) => {
@@ -40,14 +40,16 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
       updated[card.id] = card;
       return updated;
     });
+    databaseService.saveCards(userId, card);
   };
 
-  const deletCard = (id) => {
+  const deletCard = (card) => {
     setCards((cards) => {
       const updated = { ...cards };
-      delete updated[id];
+      delete updated[card.id];
       return updated;
     });
+    databaseService.removeCards(userId, card);
   };
 
   return (

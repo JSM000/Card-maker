@@ -1,17 +1,20 @@
-import { database } from "./firebase";
+import { firebaseApp } from "./firebase";
 
 class DatabaseService {
-  storeCards(userId, cards) {
-    database.ref(`cards/${userId}`).set(cards);
+  saveCards(userId, card) {
+    firebaseApp.database().ref(`${userId}/cards/${card.id}`).set(card);
+  }
+  removeCards(userId, card) {
+    firebaseApp.database().ref(`${userId}/cards/${card.id}`).remove();
   }
 
-  readCards(userId, onUpdate) {
-    const dbRef = database.ref(`cards/${userId}`);
+  syncCards(userId, onUpdate) {
+    const dbRef = firebaseApp.database().ref(`${userId}/cards/`);
     dbRef.on("value", (snapshot) => {
       const data = snapshot.val();
       data && onUpdate(data);
     });
-    return dbRef.off;
+    return () => dbRef.off();
   }
 }
 

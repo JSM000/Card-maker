@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
-import Spinner from "../spinner/spinner";
 import styles from "./image_file_input.module.css";
+import ReactLoading from "react-loading";
 
 const ImageFileInput = ({ id, fileName, setImg, imageService }) => {
-  const [loading, setLoading] = useState();
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef();
 
   const onClick = (e) => {
@@ -23,7 +23,7 @@ const ImageFileInput = ({ id, fileName, setImg, imageService }) => {
   };
 
   return (
-    <>
+    <div className={styles.container}>
       <input
         type="file"
         ref={inputRef}
@@ -31,22 +31,21 @@ const ImageFileInput = ({ id, fileName, setImg, imageService }) => {
         accept="image/*"
         onChange={onImgChange}
       />
-      <button
-        className={`${styles.imageBtn} ${getStyles(fileName)}`}
-        onClick={onClick}
-      >
-        {loading ? <Spinner /> : fileName || "No file"}
-      </button>
-    </>
+      {!loading && (
+        <button
+          className={`${styles.imageBtn} ${fileName && styles.pink}`}
+          onClick={onClick}
+        >
+          {fileName || "No file"}
+        </button>
+      )}
+      {loading && (
+        <div className={styles.loading}>
+          <ReactLoading type="spin" color="black" width="100%" height="100%" />
+        </div>
+      )}
+    </div>
   );
 };
-
-function getStyles(fileName) {
-  if (fileName) {
-    return styles.pink;
-  } else {
-    return;
-  }
-}
 
 export default ImageFileInput;

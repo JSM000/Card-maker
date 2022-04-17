@@ -7,7 +7,7 @@ const CardEditForm = memo(({ FileInput, card, deletCard, amendCard }) => {
 
   const onSumit = (e) => {
     e.preventDefault();
-    deletCard(card.id);
+    deletCard(card, card.id);
   };
 
   const onChange = (e) => {

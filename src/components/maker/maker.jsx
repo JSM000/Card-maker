@@ -8,8 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Maker = memo(({ databaseService, authService, FileInput }) => {
   const [cards, setCards] = useState({});
-  const [image, setImage] = useState({});
-  const [userId, setUserId] = useState()
+  const [userId, setUserId] = useState();
 
   const navigate = useNavigate();
   const onLogout = () => {
@@ -17,19 +16,20 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
   };
   useEffect(() => {
     authService.onAuthChanged((user) => {
-      user ? setUserId(user.uid) : navigate("/")});
+      user ? setUserId(user.uid) : navigate("/");
+    });
   });
 
   useEffect(() => {
-    databaseService.storeCards(`${userId}`, cards)
+    databaseService.storeCards(`${userId}`, cards);
   }, [cards]);
 
-  const addOrAmendCard = (card, add) => {
-    add && setImage({});
+  const addOrAmendCard = (card) => {
     setCards((cards) => {
       const updated = { ...cards };
       updated[card.id] = card;
-      return updated});
+      return updated;
+    });
   };
 
   const deletCard = (id) => {
@@ -40,20 +40,6 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
     });
   };
 
-  const setImg = (id, fileName, url) => {
-    console.log(url);
-    id
-      ? setCards((cards) => {
-          const updated = { ...cards };
-          const card = { ...updated[id] };
-          card["fileName"] = fileName;
-          card["fileURL"] = url;
-          updated[id] = card;
-          return updated;
-        })
-      : setImage({ fileName: fileName, url: url });
-  };
-
   return (
     <section className={styles.maker}>
       <Header onLogout={onLogout}></Header>
@@ -62,9 +48,7 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
           cards={cards}
           addOrAmendCard={addOrAmendCard}
           deletCard={deletCard}
-          setImg={setImg}
           FileInput={FileInput}
-          image={image}
         />
         <Preview cards={cards} />
       </main>

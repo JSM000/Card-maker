@@ -14,17 +14,10 @@ const Editor = memo(
             card={cards[key]}
             deletCard={deletCard}
             amendCard={addOrAmendCard}
-            setImg={setImg}
             FileInput={FileInput}
-            image={image}
           />
         ))}
-        <CardAddForm
-          addCard={addOrAmendCard}
-          setImg={setImg}
-          FileInput={FileInput}
-          image={image}
-        />
+        <CardAddForm addCard={addOrAmendCard} FileInput={FileInput} />
       </section>
     );
   }

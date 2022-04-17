@@ -11,15 +11,15 @@ const ImageFileInput = ({ id, fileName, setImg, imageService }) => {
     inputRef.current.click();
   };
 
-  const onImgChange = (e) => {
+  const onImgChange = async (e) => {
     setLoading(true);
     const file = e.target.files[0];
-    imageService.upload(file).then((url) => {
-      const regax = /(.+)\../;
-      const fileNameRegax = file.name.match(regax)[1];
-      setImg(id, fileNameRegax, url);
-      setLoading(false);
+    const imageResult = await imageService.upload(file);
+    setImg({
+      fileName: imageResult.original_filename,
+      fileURL: imageResult.url,
     });
+    setLoading(false);
   };
 
   return (

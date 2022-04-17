@@ -1,8 +1,10 @@
-import React, { useRef, memo } from "react";
+import React, { useRef, memo, useState } from "react";
 import styles from "./card_add_form.module.css";
 import Button from "../button/button";
 
-const CardAddForm = memo(({ addCard, setImg, FileInput, image }) => {
+const CardAddForm = memo(({ addCard, FileInput }) => {
+  const [file, setFile] = useState({ fileName: null, fileURL: null });
+
   const inputRef = useRef([]);
   const onSubmit = (e) => {
     e.preventDefault();
@@ -14,11 +16,15 @@ const CardAddForm = memo(({ addCard, setImg, FileInput, image }) => {
       title: inputRef.current[4].value || "",
       email: inputRef.current[5].value || "",
       message: inputRef.current[6].value || "",
-      fileName: image.fileName || "",
-      fileURL: image.url || "",
+      fileName: file.fileName || "",
+      fileURL: file.fileURL || "",
     };
     inputRef.current[7].reset();
     addCard(card, true);
+  };
+
+  const setImg = (file) => {
+    setFile(file);
   };
 
   return (
@@ -71,7 +77,7 @@ const CardAddForm = memo(({ addCard, setImg, FileInput, image }) => {
         ref={(el) => (inputRef.current[6] = el)}
       ></textarea>
       <div className={styles.fileInput}>
-        <FileInput fileName={image.fileName} setImg={setImg} />
+        <FileInput fileName={file.fileName} setImg={setImg} />
       </div>
       <Button name={"Add"} onClick={onSubmit} />
     </form>

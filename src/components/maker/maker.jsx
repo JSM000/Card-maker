@@ -24,6 +24,16 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
     databaseService.storeCards(`${userId}`, cards);
   }, [cards]);
 
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    const stopRead = databaseService.readCards(userId, (value) => {
+      setCards(value);
+    });
+    return stopRead;
+  }, [userId, databaseService]);
+
   const addOrAmendCard = (card) => {
     setCards((cards) => {
       const updated = { ...cards };

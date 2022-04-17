@@ -21,6 +21,7 @@ const CardAddForm = memo(({ addCard, FileInput }) => {
     };
     inputRef.current[7].reset();
     addCard(card, true);
+    setFile({ fileName: null, fileURL: null });
   };
 
   const setImg = (file) => {

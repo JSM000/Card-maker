@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useCallback } from "react";
 import styles from "./maker.module.css";
 import Header from "../header/header";
 import Footer from "../footer/footer";
@@ -6,23 +6,13 @@ import Editor from "../editor/editor";
 import Preview from "../preview/preview";
 import { useNavigate, useLocation } from "react-router-dom";
 
-const Maker = memo(({ databaseService, authService, FileInput }) => {
+const Maker = ({ databaseService, authService, FileInput }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const locationState = location?.state;
 
   const [cards, setCards] = useState({});
   const [userId, setUserId] = useState(locationState && locationState.id);
-
-  const onLogout = () => {
-    authService.logout();
-  };
-
-  useEffect(() => {
-    authService.onAuthChanged((user) => {
-      user ? setUserId(user.uid) : navigate("/");
-    });
-  });
 
   useEffect(() => {
     if (!userId) {
@@ -32,7 +22,17 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
       setCards(cards);
     });
     return () => stopSync();
-  }, [userId]);
+  }, [userId, databaseService]);
+
+  useEffect(() => {
+    authService.onAuthChanged((user) => {
+      user ? setUserId(user.uid) : navigate("/");
+    });
+  }, [authService, navigate]);
+
+  const onLogout = () => {
+    authService.logout();
+  };
 
   const addOrAmendCard = (card) => {
     setCards((cards) => {
@@ -67,6 +67,6 @@ const Maker = memo(({ databaseService, authService, FileInput }) => {
       <Footer></Footer>
     </section>
   );
-});
+};
 
 export default Maker;

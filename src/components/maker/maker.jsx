@@ -30,9 +30,9 @@ const Maker = ({ databaseService, authService, FileInput }) => {
     });
   }, [authService, navigate]);
 
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     authService.logout();
-  };
+  }, [authService]);
 
   const addOrAmendCard = (card) => {
     setCards((cards) => {

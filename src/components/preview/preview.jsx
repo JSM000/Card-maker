@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React from "react";
 import Card from "../card/card";
 import styles from "./preview.module.css";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./maker.module.css";
 import Header from "../header/header";
 import Footer from "../footer/footer";
